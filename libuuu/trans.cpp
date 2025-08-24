@@ -173,8 +173,8 @@ int HIDTrans::write_simple(void *buff, size_t size)
 
 	if (m_outEP)
 	{
-		uint8_t tries = 0;
-		do
+		//uint8_t tries = 0;
+		//do
 		{
 			ret = libusb_interrupt_transfer(
 				(libusb_device_handle *)m_devhandle,
@@ -184,14 +184,14 @@ int HIDTrans::write_simple(void *buff, size_t size)
 				&actual_size,
 				m_timeout
 			);
-			tries++;
+			//tries++;
 		}
-		while(ret<0 && tries<=10);
+		//while(ret<0 && tries<=10);
 	}
 	else
 	{
-		uint8_t tries = 0;
-		do
+		//uint8_t tries = 0;
+		//do
 		{
 			ret = libusb_control_transfer(
 				(libusb_device_handle *)m_devhandle,
@@ -203,9 +203,9 @@ int HIDTrans::write_simple(void *buff, size_t size)
 				size,
 				m_timeout
 			);
-			tries++;
+			//tries++;
 		}
-		while(ret<0 && tries<=10);
+		//while(ret<0 && tries<=10);
 	}
 
 	if (ret < 0)
@@ -258,8 +258,8 @@ int BulkTrans::write_simple(void *buff, size_t size)
 		if (sz > m_MaxTransPreRequest)
 			sz = m_MaxTransPreRequest;
 
-		uint8_t tries = 0;
-		do
+		//uint8_t tries = 0;
+		//do
 		{
 			ret = libusb_bulk_transfer(
 				(libusb_device_handle *)m_devhandle,
@@ -269,9 +269,9 @@ int BulkTrans::write_simple(void *buff, size_t size)
 				&actual_length,
 				m_timeout
 			);
-			tries++;
+			//tries++;
 		}
-		while(ret<0 && tries<=10);
+		//while(ret<0 && tries<=10);
 
 		if (ret < 0)
 		{
@@ -285,8 +285,8 @@ int BulkTrans::write_simple(void *buff, size_t size)
 	//Send zero package
 	if (m_b_send_zero && ( (size%m_ep_out.package_size) == 0))
 	{
-		uint8_t tries = 0;
-		do
+		//uint8_t tries = 0;
+		//do
 		{
 			ret = libusb_bulk_transfer(
 				(libusb_device_handle *)m_devhandle,
@@ -296,9 +296,9 @@ int BulkTrans::write_simple(void *buff, size_t size)
 				&actual_length,
 				10000 //modified
 			);
-			tries++;
+			//tries++;
 		}
-		while(ret<0 && tries<=10);
+		//while(ret<0 && tries<=10);
 
 		if (ret < 0)
 		{
