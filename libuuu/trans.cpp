@@ -246,14 +246,20 @@ int BulkTrans::write_simple(void *buff, size_t size)
 		if (sz > m_MaxTransPreRequest)
 			sz = m_MaxTransPreRequest;
 
-		ret = libusb_bulk_transfer(
-			(libusb_device_handle *)m_devhandle,
-			m_ep_out.addr,
-			p,
-			sz,
-			&actual_length,
-			m_timeout
-		);
+		uint8_t tries = 0;
+		do
+		{
+			ret = libusb_bulk_transfer(
+				(libusb_device_handle *)m_devhandle,
+				m_ep_out.addr,
+				p,
+				sz,
+				&actual_length,
+				m_timeout
+			);
+			tries++;
+		}
+		while(ret<0 && tries<=10);
 
 		if (ret < 0)
 		{
@@ -273,7 +279,7 @@ int BulkTrans::write_simple(void *buff, size_t size)
 			nullptr,
 			0,
 			&actual_length,
-			2000
+			10000 //modified
 		);
 
 		if (ret < 0)
