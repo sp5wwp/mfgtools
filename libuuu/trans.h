@@ -91,11 +91,7 @@ protected:
 
 private:
 	int m_outEP = 0;
-<<<<<<< HEAD
 	const int m_timeout = 10000; //modified
-=======
-	const int m_timeout = 5000; //modified
->>>>>>> origin/master
 	int m_set_report = 9;
 };
 
@@ -116,11 +112,7 @@ private:
 	int m_b_send_zero = 0;
 	EPInfo m_ep_in;
 	EPInfo m_ep_out;
-<<<<<<< HEAD
 	int m_timeout = 10000; //modified
-=======
-	int m_timeout = 5000; //modified
->>>>>>> origin/master
 };
 
 int polling_usb(std::atomic<int>& bexit);
