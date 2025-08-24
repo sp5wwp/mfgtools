@@ -184,6 +184,7 @@ int HIDTrans::write_simple(void *buff, size_t size)
 				&actual_size,
 				m_timeout
 			);
+			tries++;
 		}
 		while(ret<0 && tries<=10);
 	}
@@ -202,6 +203,7 @@ int HIDTrans::write_simple(void *buff, size_t size)
 				size,
 				m_timeout
 			);
+			tries++;
 		}
 		while(ret<0 && tries<=10);
 	}
@@ -294,6 +296,7 @@ int BulkTrans::write_simple(void *buff, size_t size)
 				&actual_length,
 				10000 //modified
 			);
+			tries++;
 		}
 		while(ret<0 && tries<=10);
 
