@@ -79,7 +79,7 @@ protected:
 class HIDTrans : public USBTrans
 {
 public:
-	HIDTrans(int timeout = 1000) : USBTrans(2), m_timeout{timeout} {}
+	HIDTrans(int timeout = 5000) : USBTrans(5), m_timeout{timeout} {} //modified
 	~HIDTrans() override { if (m_devhandle) close();  m_devhandle = nullptr; }
 
 	int open(void *p) override;
@@ -91,14 +91,14 @@ protected:
 
 private:
 	int m_outEP = 0;
-	const int m_timeout = 1000;
+	const int m_timeout = 2000; //modified
 	int m_set_report = 9;
 };
 
 class BulkTrans : public USBTrans
 {
 public:
-	BulkTrans(int timeout = 2000) : USBTrans(2), m_timeout{timeout} {}
+	BulkTrans(int timeout = 5000) : USBTrans(5), m_timeout{timeout} {} //modified
 	~BulkTrans() override { if (m_devhandle) close();  m_devhandle = nullptr; }
 
 	int open(void *p) override;
