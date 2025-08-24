@@ -173,27 +173,37 @@ int HIDTrans::write_simple(void *buff, size_t size)
 
 	if (m_outEP)
 	{
-		ret = libusb_interrupt_transfer(
-			(libusb_device_handle *)m_devhandle,
-			m_outEP,
-			p,
-			size,
-			&actual_size,
-			m_timeout
-		);
+		uint8_t tries = 0;
+		do
+		{
+			ret = libusb_interrupt_transfer(
+				(libusb_device_handle *)m_devhandle,
+				m_outEP,
+				p,
+				size,
+				&actual_size,
+				m_timeout
+			);
+		}
+		while(ret<0 && tries<=10);
 	}
 	else
 	{
-		ret = libusb_control_transfer(
-			(libusb_device_handle *)m_devhandle,
-			LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
-			m_set_report,
-			(2 << 8) | p[0],
-			0,
-			p,
-			size,
-			m_timeout
-		);
+		uint8_t tries = 0;
+		do
+		{
+			ret = libusb_control_transfer(
+				(libusb_device_handle *)m_devhandle,
+				LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
+				m_set_report,
+				(2 << 8) | p[0],
+				0,
+				p,
+				size,
+				m_timeout
+			);
+		}
+		while(ret<0 && tries<=10);
 	}
 
 	if (ret < 0)
@@ -273,14 +283,19 @@ int BulkTrans::write_simple(void *buff, size_t size)
 	//Send zero package
 	if (m_b_send_zero && ( (size%m_ep_out.package_size) == 0))
 	{
-		ret = libusb_bulk_transfer(
-			(libusb_device_handle *)m_devhandle,
-			m_ep_out.addr,
-			nullptr,
-			0,
-			&actual_length,
-			10000 //modified
-		);
+		uint8_t tries = 0;
+		do
+		{
+			ret = libusb_bulk_transfer(
+				(libusb_device_handle *)m_devhandle,
+				m_ep_out.addr,
+				nullptr,
+				0,
+				&actual_length,
+				10000 //modified
+			);
+		}
+		while(ret<0 && tries<=10);
 
 		if (ret < 0)
 		{
